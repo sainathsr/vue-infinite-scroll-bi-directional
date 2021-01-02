@@ -6,7 +6,7 @@
           {{ item.name }}
         </div>
       </div>
-      <div class="loadingMore">LOADING .....</div>
+      <div v-if="canLoadMore" class="loadingMore">LOADING .....</div>
       <div class="sentinel" ref="sentinel"></div>
     </div>
     <div class="initialLoad" v-else>INITIAL LIST LOADING .....</div>
@@ -21,7 +21,9 @@ export default {
       this.list.push(...items);
       this.pageNumber++;
       this.initialLoad = false;
-      // this.setUpInterSectionObserver();
+      this.$nextTick().then(() => {
+        this.setUpInterSectionObserver();
+      });
     });
   },
   destroyed() {
@@ -38,7 +40,7 @@ export default {
        * it would need just these props.loadingMore,canLoadMore and the list
        */
 
-      loadingMore: false,
+      isLoadingMore: false,
       canLoadMore: true, //list has to end at some point
 
       //extra stuff
@@ -61,21 +63,23 @@ export default {
       this.listEndObserver.observe(this.$refs["sentinel"]);
     },
     handleIntersection() {
-      if (this.canLoadMore) {
+      if (this.canLoadMore && !this.isLoadingMore) {
         this.loadMore();
       }
     },
     async loadMore() {
       try {
         this.isLoadingMore = true;
-        let items = this.fetchItemsAPI(this.pageNumber, this.pageCount);
+        let items = await this.fetchItemsAPI(this.pageNumber, this.pageCount);
         this.pageNumber++;
         this.list.push(...items);
       } catch (error) {
         console.log("Reached end of page", error);
         this.canLoadMore = false;
       } finally {
-        this.isLoadingMore = false;
+        this.$nextTick().then(() => {
+          this.isLoadingMore = false;
+        });
       }
     },
 
