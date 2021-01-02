@@ -116,11 +116,11 @@ export default {
   border: 1px solid darkgray;
 }
 .list-item {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   border: 1px solid darkgoldenrod;
   background: lightgoldenrodyellow;
   color: black;
-  padding: 25px;
+  padding: 15px;
   line-height: 25px;
   text-align: center;
   vertical-align: middle;

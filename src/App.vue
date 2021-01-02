@@ -22,7 +22,7 @@ export default {
 
   .infi-scroll {
     margin: 60px;
-    height: 100%;
+    height: 50%;
   }
 }
 </style>
