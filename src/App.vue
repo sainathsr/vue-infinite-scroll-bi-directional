@@ -1,28 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" width="25%">
-    <HelloWorld msg="Hello Vue in CodeSandbox!"/>
+    <InfiniteScroll class="infi-scroll"> </InfiniteScroll>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import InfiniteScroll from "./components/InfiniteScroll";
 
 export default {
   name: "App",
   components: {
-    HelloWorld
-  }
+    InfiniteScroll,
+  },
 };
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
   margin-top: 60px;
+
+  .infi-scroll {
+    margin: 60px;
+    height: 100%;
+  }
 }
 </style>
