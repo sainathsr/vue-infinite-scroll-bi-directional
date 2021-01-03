@@ -6,8 +6,9 @@
           {{ item.name }}
         </div>
       </div>
-      <div v-if="canLoadMore" class="loadingMore">LOADING .....</div>
       <div class="sentinel" ref="sentinel"></div>
+
+      <div v-if="canLoadMore" class="loadingMore">LOADING .....</div>
     </div>
     <div class="initialLoad" v-else>INITIAL LIST LOADING .....</div>
   </div>
@@ -21,6 +22,7 @@ export default {
       this.list.push(...items);
       this.pageNumber++;
       this.initialLoad = false;
+      //wait for initial list to render and then set up observer
       this.$nextTick().then(() => {
         this.setUpInterSectionObserver();
       });
@@ -62,8 +64,11 @@ export default {
 
       this.listEndObserver.observe(this.$refs["sentinel"]);
     },
-    handleIntersection() {
-      if (this.canLoadMore && !this.isLoadingMore) {
+    handleIntersection([entry]) {
+      if (entry.isIntersecting) {
+        console.log("sentinel intersecting");
+      }
+      if (entry.isIntersecting && this.canLoadMore && !this.isLoadingMore) {
         this.loadMore();
       }
     },
@@ -71,15 +76,14 @@ export default {
       try {
         this.isLoadingMore = true;
         let items = await this.fetchItemsAPI(this.pageNumber, this.pageCount);
+        console.log("loaded page " + this.pageNumber);
         this.pageNumber++;
         this.list.push(...items);
       } catch (error) {
         console.log("Reached end of page", error);
         this.canLoadMore = false;
       } finally {
-        this.$nextTick().then(() => {
-          this.isLoadingMore = false;
-        });
+        this.isLoadingMore = false;
       }
     },
 
@@ -100,7 +104,7 @@ export default {
           } else {
             rej(new Error("No more items to load"));
           }
-        }, 2000);
+        }, 1000);
       });
     },
   },

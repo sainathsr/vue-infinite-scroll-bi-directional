@@ -17,11 +17,12 @@ export default {
 
 <style lang="scss">
 #app {
-  height: 100vh;
+  height: 80vh;
+  margin-top: 10%;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
 
   .infi-scroll {
-    width: 50%;
+    width: 75%;
     margin-left: auto;
     margin-right: auto;
     height: 50%;
